@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "582196235385",
+    "project_id": "femease-399407",
+    "storage_bucket": "femease-399407.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582196235385:android:e4dacb3c814583e57418a8",
+        "android_client_info": {
+          "package_name": "com.femease"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYx1Jp5XjSlXYwmAswFvLb3Fvhyw3-mgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582196235385:android:58f5f39670623ce37418a8",
+        "android_client_info": {
+          "package_name": "com.femeasedoctor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYx1Jp5XjSlXYwmAswFvLb3Fvhyw3-mgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
