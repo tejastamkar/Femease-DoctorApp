@@ -212,6 +212,7 @@ const EditProfile = () => {
               experienceRef.current = input;
             }}
             inputStyle={styles.inputStyle}
+            maxLength={2}
           />
           <Input
             isSecond

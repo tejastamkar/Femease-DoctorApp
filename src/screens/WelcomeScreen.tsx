@@ -39,8 +39,9 @@ const WelcomeScreen = () => {
             Platform for{'\n'}Seamless Healthcare{'\n'}Solutions.
           </AppText>
           <Button
-            children="Get Started"
+            children="Continue"
             onPress={() => NavigationService.navigate(LOGIN_SCREEN)}
+            containerStyle={styles.containerStyle}
           />
         </>
       </KeyBoardAware>
@@ -55,5 +56,11 @@ const styles = StyleSheet.create({
     width: 400,
     alignSelf: 'center',
     marginTop: '15%',
+  },
+  containerStyle: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    bottom: 10,
   },
 });

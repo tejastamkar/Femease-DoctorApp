@@ -1,12 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {PermissionsAndroid, Platform} from 'react-native';
 import {
   ClientRoleType,
@@ -15,21 +8,30 @@ import {
   ChannelProfileType,
   IRtcEngineEx,
 } from 'react-native-agora';
-import {AppSafeAreaView, Loader} from '../common';
+import {
+  AppSafeAreaView,
+  AppText,
+  Loader,
+  SEMI_BOLD,
+  SIXTEEN,
+  WHITE,
+} from '../common';
 import {useAppDispatch, useAppSelector} from '../store/hooks';
 import NavigationService from '../navigation/NavigationService';
 import {SUBMIT_REPORT_SCREEN} from '../navigation/routes';
 import {
   callEndIcon,
   muteIcon,
+  noVideoIcon,
   switchCameraIcon,
   unmuteIcon,
+  videoIcon,
 } from '../helper/ImageAssets';
 import {colors} from '../theme/colors';
 import {timeDifference} from '../helper/utility';
-import {showError} from '../helper/logger';
-import {updateCallStatus} from '../actions/authActions';
 import FastImage from 'react-native-fast-image';
+import {setAgoraDetails} from '../slices/authSlice';
+import {updateCallStatus} from '../actions/authActions';
 
 const dimensions = {
   width: Dimensions.get('window').width,
@@ -37,11 +39,12 @@ const dimensions = {
 };
 const CallingScreen = ({route}) => {
   const dispatch = useAppDispatch();
-  const {agoraDetails, patientDetails} = useAppSelector(state => {
+  const {agoraDetails, patientDetails, homeData} = useAppSelector(state => {
     return state.auth;
   });
+  const {data: _data} = homeData ?? '';
+  const {name} = _data ?? '';
 
-  // var isMuted = false;
   const appId = '963bbc15825c4ecf8d1a5d80a469b3b0';
   const channelName = agoraDetails?.channelName;
   const token = agoraDetails?.token;
@@ -52,6 +55,8 @@ const CallingScreen = ({route}) => {
   const [remoteUid, setRemoteUid] = useState(0); // Uid of the remote user
   const [message, setMessage] = useState(''); // Message to the user
   const [startTime, setStartTime] = useState();
+  const [videoEnabled, setVideoEnabled] = useState(true);
+  const [remoteVideoEnabled, setRemoteVideoEnabled] = useState(true);
 
   const getPermission = async () => {
     if (Platform.OS === 'android') {
@@ -67,15 +72,6 @@ const CallingScreen = ({route}) => {
     setupVideoSDKEngine();
   }, [agoraDetails]);
 
-  // useEffect(() => {
-  //   if (remoteUid) {
-  //     return;
-  //   }
-  //   setTimeout(() => {
-  //     leave(false);
-  //   }, 60000);
-  // }, [remoteUid]);
-
   const setupVideoSDKEngine = async () => {
     try {
       if (Platform.OS === 'android') {
@@ -88,18 +84,20 @@ const CallingScreen = ({route}) => {
         onJoinChannelSuccess: () => {
           showMessage('Successfully joined the channel ' + channelName);
           setIsJoined(true);
-          setStartTime(new Date());
         },
         onUserJoined: (_connection, Uid) => {
           showMessage('Remote user joined with uid ' + Uid);
           setRemoteUid(Uid);
+          setStartTime(new Date());
         },
         onUserOffline: (_connection, Uid) => {
           showMessage('Remote user left the channel. uid: ' + Uid);
-          setRemoteUid(0);
-
-          leave();
+          leave(Uid);
           setIsJoined(false);
+        },
+        onUserEnableVideo: (_connection, Uid, muted) => {
+          showMessage('Remote user change the status of video ' + muted);
+          setRemoteVideoEnabled(muted);
         },
       });
       agoraEngine.initialize({
@@ -134,12 +132,13 @@ const CallingScreen = ({route}) => {
       console.log(e);
     }
   };
-  const leave = (userRespond = true) => {
+  // console.log('remoteUid:::::', remoteUid);
+  const leave = id => {
     try {
-      setRemoteUid(0);
+      // setRemoteUid(0);
+      dispatch(setAgoraDetails(undefined));
       setIsJoined(false);
       agoraEngineRef.current?.stopPreview();
-
       agoraEngineRef.current?.leaveChannel({
         stopAudioMixing: true,
         stopAllEffect: true,
@@ -147,7 +146,8 @@ const CallingScreen = ({route}) => {
       });
 
       showMessage('You left the channel');
-      if (userRespond) {
+
+      if (remoteUid || id) {
         let data = {
           id: patientDetails?._id,
           status: 'Completed',
@@ -158,7 +158,6 @@ const CallingScreen = ({route}) => {
         });
       } else {
         NavigationService.goBack();
-        showError('No response from other side');
       }
     } catch (e) {
       console.log(e);
@@ -171,32 +170,69 @@ const CallingScreen = ({route}) => {
     agoraEngineRef.current?.muteLocalAudioStream(isMute);
     setIsMute(!isMute);
   };
+  const onVideo = () => {
+    videoEnabled
+      ? agoraEngineRef.current?.disableVideo()
+      : agoraEngineRef.current?.enableVideo();
+    setVideoEnabled(!videoEnabled);
+  };
   return (
     <AppSafeAreaView>
-      <React.Fragment key={0}>
-        {isJoined ? (
-          <RtcSurfaceView
-            canvas={{uid: 0}}
-            style={remoteUid == 0 ? styles.videoView1 : styles.videoView}
-          />
-        ) : (
-          <View
-            style={{
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Loader />
-          </View>
-        )}
-      </React.Fragment>
-
-      {isJoined && remoteUid !== 0 ? (
-        <React.Fragment key={remoteUid}>
-          <RtcSurfaceView canvas={{uid: remoteUid}} style={styles.videoView} />
+      {videoEnabled ? (
+        <React.Fragment key={0}>
+          {isJoined ? (
+            <RtcSurfaceView
+              canvas={{uid: 0}}
+              style={remoteUid == 0 ? styles.videoView1 : styles.videoView}
+            />
+          ) : (
+            <View
+              style={{
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Loader />
+            </View>
+          )}
         </React.Fragment>
       ) : (
-        <></>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'black',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <AppText color={WHITE} type={SIXTEEN} weight={SEMI_BOLD}>
+            {'MySelf'}
+          </AppText>
+        </View>
+      )}
+
+      {remoteVideoEnabled ? (
+        isJoined && remoteUid !== 0 ? (
+          <React.Fragment key={remoteUid}>
+            <RtcSurfaceView
+              canvas={{uid: remoteUid}}
+              style={styles.videoView}
+            />
+          </React.Fragment>
+        ) : (
+          <></>
+        )
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'black',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <AppText color={WHITE} type={SIXTEEN} weight={SEMI_BOLD}>
+            {'Patient'}
+          </AppText>
+        </View>
       )}
       <View style={styles.btnContainer}>
         <TouchableOpacity onPress={switchCam} style={styles.button}>
@@ -207,9 +243,16 @@ const CallingScreen = ({route}) => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={leave} style={styles.button}>
+        <TouchableOpacity onPress={() => leave(null)} style={styles.button}>
           <FastImage
             source={callEndIcon}
+            resizeMode="contain"
+            style={styles.camera}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onVideo} style={styles.button}>
+          <FastImage
+            source={!videoEnabled ? noVideoIcon : videoIcon}
             resizeMode="contain"
             style={styles.camera}
           />

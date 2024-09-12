@@ -76,7 +76,7 @@ const UpcomingContainer = ({item}) => {
       <AppText style={styles.bottomContainer} color={YELLOW} weight={MEDIUM}>
         Scheduled on{'  '}
         <AppText weight={SEMI_BOLD} type={FOURTEEN}>
-          {moment(date).format('lll')}
+          {moment.utc(date).format('lll')}
         </AppText>
       </AppText>
     </TouchableOpacityView>
@@ -146,7 +146,7 @@ const CompletedContainer = ({item}) => {
         <AppText color={SUCCESS} weight={SEMI_BOLD}>
           Completed{'\n'}
           <AppText color={SUCCESS} type={TEN} weight={LIGHT}>
-            On {moment(date).format('ddd, MMM YY')}
+            On {moment.utc(date).format('DD, MMM YY')}
           </AppText>
         </AppText>
       </View>

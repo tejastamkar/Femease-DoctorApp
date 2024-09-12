@@ -6,8 +6,8 @@ import {colors} from '../theme/colors';
 import {universalPaddingVertical} from '../theme/dimens';
 import {useAppDispatch, useAppSelector} from '../store/hooks';
 import {getNotificationList} from '../actions/authActions';
-import {noNotificationIcon} from '../helper/ImageAssets';
-import FastImage from 'react-native-fast-image';
+import {noNotification} from '../helper/ImageAssets';
+import AnimatedLottieView from 'lottie-react-native';
 
 const ListEmptyComponent = () => {
   return (
@@ -19,10 +19,11 @@ const ListEmptyComponent = () => {
         no new notifications, we will notify you{'\n'}once we have something for
         you
       </AppText>
-      <FastImage
-        source={noNotificationIcon}
-        resizeMode="contain"
-        style={styles.image}
+      <AnimatedLottieView
+        style={{height: 250, width: 250}}
+        source={noNotification}
+        autoPlay
+        loop
       />
     </View>
   );

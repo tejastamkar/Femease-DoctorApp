@@ -16,8 +16,6 @@ import {
   TouchableOpacityView,
 } from '../common';
 import {
-  Image,
-  Linking,
   PermissionsAndroid,
   Platform,
   RefreshControl,
@@ -60,6 +58,9 @@ const Home = () => {
     todaysAppointment,
     ongoingAppointment,
   } = homeData ?? '';
+
+  // console.log('++++++', JSON.stringify(homeData));
+
   const {name, avatar} = _data ?? '';
 
   const data = [
@@ -77,7 +78,6 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(updateProfile({}, false, false));
-    // dispatch(getHomeData());
     getPermission();
   }, []);
 
@@ -162,7 +162,7 @@ const Home = () => {
                         weight={SEMI_BOLD}
                         numberOfLines={1}
                         color={BLUE}>
-                        {moment(e?.dateTime).format('hh:mm A')}
+                        {moment.utc(e?.dateTime).format('hh:mm A')}
                       </AppText>
                       <TouchableOpacityView
                         onPress={() => {

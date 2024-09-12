@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   AppSafeAreaView,
   AppText,
+  BLACK,
   Button,
   FOURTEEN,
   Input,
@@ -94,7 +95,11 @@ const SubmitReport = ({navigation}) => {
                 <AppText type={TWENTY} weight={SEMI_BOLD} color={RED}>
                   Call ended
                 </AppText>
-                <AppText weight={MEDIUM}>{duration} mins</AppText>
+                {duration ? (
+                  <AppText weight={MEDIUM}>{duration} mins</AppText>
+                ) : (
+                  <></>
+                )}
               </>
             )}
 
@@ -119,8 +124,8 @@ const SubmitReport = ({navigation}) => {
                 resizeMode="contain"
                 style={styles.uploadIcon}
               />
-              <AppText weight={MEDIUM}>
-                {image ? image?.name : 'Upload'}
+              <AppText color={BLACK} weight={MEDIUM}>
+                {image?.name ? image?.name : pdf ? 'Image Uploaded' : 'Upload'}
               </AppText>
             </TouchableOpacityView>
           </View>

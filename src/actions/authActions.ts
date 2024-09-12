@@ -155,6 +155,7 @@ export const getAgoraDetails =
     } catch (e) {
       logError(e);
       dispatch(logoutUsers(e?.message));
+      showError(e?.message);
     } finally {
       dispatch(setLoading(false));
     }
@@ -166,6 +167,7 @@ export const uploadImage =
     try {
       id ? null : dispatch(setLoading(true));
       const response = await appOperation.customer.upload_image(data);
+      console.log('res:::::::', response);
 
       if (response?.success) {
         if (id) {

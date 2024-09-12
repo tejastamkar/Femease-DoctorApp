@@ -13,12 +13,12 @@ import {
   SIXTEEN,
 } from '../common';
 import Toolbar from '../common/Toolbar';
-import {Image, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {borderWidth} from '../theme/dimens';
 import {colors} from '../theme/colors';
 import {commonStyles} from '../theme/commonStyles';
 import NavigationService from '../navigation/NavigationService';
-import {CALLING_SCREEN, SUBMIT_REPORT_SCREEN} from '../navigation/routes';
+import {CALLING_SCREEN} from '../navigation/routes';
 import {useAppDispatch, useAppSelector} from '../store/hooks';
 import {IMAGE_BASE_URL} from '../helper/Constants';
 import moment from 'moment';
@@ -41,11 +41,13 @@ export const PatientHistoryContainer = () => {
           <View style={styles.detailSingle} key={e.id}>
             <View style={styles.detailSingleSecond}>
               <AppText style={commonStyles.flex} color={BORDER} weight={MEDIUM}>
-                {index === 0 ? 'Last visited' : moment(e?.date).format('ll')}
+                {index === 0
+                  ? 'Last visited'
+                  : moment.utc(e?.date).format('ll')}
               </AppText>
               {index === 0 && (
                 <AppText weight={MEDIUM}>
-                  {moment(e?.date).format('lll')}
+                  {moment.utc(e?.date).format('lll')}
                 </AppText>
               )}
             </View>
@@ -83,19 +85,21 @@ export const AppointmentContainer = () => {
 
   const {consultingFor, dateTime, endDateTime} = patientDetails ?? '';
 
+  // console.log('++++++++++', JSON.stringify(patientDetails));
+
   var a = moment(dateTime); //now
   var b = moment(endDateTime);
   let hours = b.diff(a, 'hours');
 
-  let time = `${moment(dateTime).format('hh:mma')} - ${moment(
-    endDateTime,
-  ).format('hh:mma')}(${hours} hour)`;
+  let time = `${moment.utc(dateTime).format('hh:mma')} - ${moment
+    .utc(endDateTime)
+    .format('hh:mma')}(${hours} hour)`;
 
   const data = [
     {
       id: '1',
       title: 'Date',
-      value: moment(dateTime).format('ll'),
+      value: moment.utc(dateTime).format('ll'),
     },
     {
       id: '2',

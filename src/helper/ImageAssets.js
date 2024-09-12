@@ -26,7 +26,10 @@ export const unmuteIcon = require('../../assets/img/unmute.png');
 export const callEndIcon = require('../../assets/img/call_end.png');
 export const switchCameraIcon = require('../../assets/img/switch_camera.png');
 export const noNotificationIcon = require('../../assets/img/no_notification.png');
+export const videoIcon = require('../../assets/img/video.png');
+export const noVideoIcon = require('../../assets/img/no_video.png');
 
 //animation
 
 export const splash = require('../../assets/animation/splash.json');
+export const noNotification = require('../../assets/animation/nonotification.json');
