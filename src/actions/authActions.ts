@@ -128,7 +128,6 @@ export const getPatientDetails =
     try {
       dispatch(setLoading(true));
       const response = await appOperation.customer.patient_details(id);
-
       if (response?.success) {
         dispatch(setPatientDetails(response?.data));
       }
