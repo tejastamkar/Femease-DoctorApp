@@ -8,12 +8,13 @@ import {
   PRIMARY,
   SEMI_BOLD,
   SIXTEEN,
+  TouchableOpacityView,
   TWENTY,
   WHITE,
 } from '../common';
 import {Image, StyleSheet, View} from 'react-native';
 import {commonStyles} from '../theme/commonStyles';
-import {profilePlaceholder, starIcon} from '../helper/ImageAssets';
+import {editIcon, profilePlaceholder, starIcon} from '../helper/ImageAssets';
 import {Rating} from '@kolking/react-native-rating';
 import {colors} from '../theme/colors';
 import {SceneMap, TabView} from 'react-native-tab-view';
@@ -126,7 +127,9 @@ const Profile = () => {
               {yearsOfExperience} Years Exp.
             </AppText>
           </View>
+          <TouchableOpacityView onPress={() => {NavigationService.navigate(EDIT_PROFILE_SCREEN);}}>
           <View style={styles.headerContainerSecond}>
+            <View>
             <FastImage
               source={
                 avatar ? {uri: IMAGE_BASE_URL + avatar} : profilePlaceholder
@@ -134,6 +137,12 @@ const Profile = () => {
               resizeMode="cover"
               style={styles.profilePicture}
             />
+            <FastImage
+                source={editIcon}
+                resizeMode="contain"
+                style={styles.editIcon}
+              />
+            </View>
             {averageRating && (
               <Rating
                 size={12}
@@ -143,6 +152,7 @@ const Profile = () => {
               />
             )}
           </View>
+          </TouchableOpacityView>
         </View>
         <View style={styles.divider} />
         <TabView
@@ -152,12 +162,12 @@ const Profile = () => {
           onIndexChange={setIndex}
         />
         <View>
-          <Button
+          {/* <Button
             children="Edit Profile"
             onPress={() => {
               NavigationService.navigate(EDIT_PROFILE_SCREEN);
             }}
-          />
+          /> */}
           <Button
             children="Logout"
             onPress={() => {
@@ -181,6 +191,13 @@ const styles = StyleSheet.create({
     width: 70,
     borderRadius: 35,
     marginBottom: 5,
+  },
+  editIcon: {
+    height: 20,
+    width: 20,
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    bottom: 0,
   },
   headerContainerSecond: {
     alignItems: 'center',
