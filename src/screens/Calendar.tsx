@@ -48,7 +48,7 @@ export const ListEmptyComponent = ({title}: any) => {
 };
 
 const UpcomingContainer = ({item}) => {
-  const {date, user, subscription, doctorFee} = item ?? '';
+  const {date, user, subscription, doctorFee, time} = item ?? '';
   const {name, avatar, dob} = user ?? '';
   return (
     <TouchableOpacityView style={[styles.scheduleContainerSecond]}>
@@ -76,7 +76,7 @@ const UpcomingContainer = ({item}) => {
       <AppText style={styles.bottomContainer} color={YELLOW} weight={MEDIUM}>
         Scheduled on{'  '}
         <AppText weight={SEMI_BOLD} type={FOURTEEN}>
-          {moment.utc(date).format('lll')}
+          {moment.utc(date).format('MMM DD, YYYY')} {moment(time, "HH:mm:ss").format("hh:mm A")}
         </AppText>
       </AppText>
     </TouchableOpacityView>

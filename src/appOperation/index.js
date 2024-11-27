@@ -19,7 +19,7 @@ export class AppOperation {
   customerToken;
   accountToken;
   constructor() {
-    this.base_url = 'https://backend.femease.in/api/v1/';
+    this.base_url = 'https://stgbackend.femease.in/api/v1/';
     this.root_path = ``;
     this.admin = admin(this);
     this.guest = guest(this);
