@@ -4,6 +4,7 @@ import NetInfo from '@react-native-community/netinfo';
 import {AppText, SEMI_BOLD, THIRTEEN, WHITE} from './common';
 import {useAppDispatch} from './store/hooks';
 import FcmService from './FcmService';
+import FlashMessage from 'react-native-flash-message';
 
 const NoInternetModal = ({visible}) => {
   return visible ? (
@@ -50,6 +51,7 @@ const RootComponent = ({children}) => {
     <View style={{flex: 1}}>
       <NoInternetModal visible={visible} />
       {children}
+      <FlashMessage position="bottom" />
     </View>
   );
 };
