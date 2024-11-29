@@ -5,9 +5,9 @@ export default (appOperation: AppOperation) => ({
   user_profile: () =>
     appOperation.get('doctor/profile', undefined, undefined, CUSTOMER_TYPE),
   home: () => appOperation.get('doctor', undefined, undefined, CUSTOMER_TYPE),
-  patient_details: (id: string) =>
+  patient_details: (appointmentId: string) =>
     appOperation.get(
-      `doctor/appointment/${id}`,
+      `doctor/appointment/${appointmentId}`,
       undefined,
       undefined,
       CUSTOMER_TYPE,
