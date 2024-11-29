@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {appOperation} from '../appOperation';
-import {logError, showError} from '../helper/logger';
+import { appOperation } from '../appOperation';
+import { logError, showToast } from '../helper/logger';
 import NavigationService from '../navigation/NavigationService';
 import {
   NAVIGATION_AUTH_STACK,
@@ -17,8 +17,8 @@ import {
   setPatientDetails,
   setUserData,
 } from '../slices/authSlice';
-import {AppDispatch} from '../store/store';
-import {FCM_TOKEN_KEY, USER_TOKEN_KEY} from '../helper/Constants';
+import { AppDispatch } from '../store/store';
+import { FCM_TOKEN_KEY, USER_TOKEN_KEY } from '../helper/Constants';
 
 export interface SendOtpProps {
   phone: string;
@@ -38,9 +38,9 @@ export const sendOtp =
         dispatch(setUserData(response.data));
         NavigationService.navigate(OTP_VERIFY_SCREEN);
       }
-      showError(response?.message);
+      showToast(response?.message, 'success');
     } catch (e) {
-      showError(e?.message || 'An unexpected error occurred');
+      showToast(e?.message || 'An unexpected error occurred', 'danger');
       dispatch(logoutUsers(e?.message));
     } finally {
       dispatch(setLoading(false));
@@ -52,9 +52,9 @@ export const ReSendOtp =
       dispatch(setLoading(true));
       const response = await appOperation.guest.resend_otp(data);
 
-      showError(response?.message);
+      showToast(response?.message, 'success');
     } catch (e) {
-      showError(e?.message || 'An unexpected error occurred');
+      showToast(e?.message || 'An unexpected error occurred', 'danger');
       dispatch(logoutUsers(e?.message));
     } finally {
       dispatch(setLoading(false));
@@ -75,9 +75,9 @@ export const verifyOtp =
         );
         dispatch(getUserProfile());
       }
-      showError(response?.message);
+      showToast(response?.message, 'success');
     } catch (e) {
-      showError(e?.message || 'An unexpected error occurred');
+      showToast(e?.message || 'An unexpected error occurred', 'danger');
       dispatch(logoutUsers(e?.message));
     } finally {
       dispatch(setLoading(false));
@@ -86,26 +86,26 @@ export const verifyOtp =
 
 export const getUserProfile =
   (isNavigate = true) =>
-  async (dispatch: AppDispatch) => {
-    try {
-      dispatch(setLoading(true));
-      const response = await appOperation.customer.user_profile();
+    async (dispatch: AppDispatch) => {
+      try {
+        dispatch(setLoading(true));
+        const response = await appOperation.customer.user_profile();
 
-      if (response?.success) {
-        dispatch(setUserData(response.data));
-        if (!isNavigate) {
-          return;
+        if (response?.success) {
+          dispatch(setUserData(response.data));
+          if (!isNavigate) {
+            return;
+          }
+          dispatch(getHomeData());
+          NavigationService.reset(NAVIGATION_BOTTOM_TAB_STACK);
         }
-        dispatch(getHomeData());
-        NavigationService.reset(NAVIGATION_BOTTOM_TAB_STACK);
+      } catch (e) {
+        logError(e);
+        dispatch(logoutUsers(e?.message));
+      } finally {
+        dispatch(setLoading(false));
       }
-    } catch (e) {
-      logError(e);
-      dispatch(logoutUsers(e?.message));
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
+    };
 
 export const getHomeData = () => async (dispatch: AppDispatch) => {
   try {
@@ -154,7 +154,7 @@ export const getAgoraDetails =
     } catch (e) {
       logError(e);
       dispatch(logoutUsers(e?.message));
-      showError(e?.message);
+      showToast(e?.message, 'danger');
     } finally {
       dispatch(setLoading(false));
     }
@@ -162,60 +162,60 @@ export const getAgoraDetails =
 
 export const uploadImage =
   (data: FormData, id: string, profileData: any, setData?: any) =>
-  async (dispatch: AppDispatch) => {
-    try {
-      id ? null : dispatch(setLoading(true));
-      const response = await appOperation.customer.upload_image(data);
-      console.log('res:::::::', response);
+    async (dispatch: AppDispatch) => {
+      try {
+        id ? null : dispatch(setLoading(true));
+        const response = await appOperation.customer.upload_image(data);
+        console.log('res:::::::', response);
 
-      if (response?.success) {
-        if (id) {
-          let _data = {
-            user_id: id,
-            avatar: response?.data['0']?.path,
-          };
+        if (response?.success) {
+          if (id) {
+            let _data = {
+              user_id: id,
+              avatar: response?.data['0']?.path,
+            };
 
-          dispatch(updateProfile(_data, false));
-        } else if (profileData) {
-          profileData['certification'] = response?.data['0']?.path;
-          dispatch(updateProfile(profileData, true));
+            dispatch(updateProfile(_data, false));
+          } else if (profileData) {
+            profileData['certification'] = response?.data['0']?.path;
+            dispatch(updateProfile(profileData, true));
+          } else {
+            setData(response?.data['0']?.path);
+          }
         } else {
-          setData(response?.data['0']?.path);
+          showToast(response?.message, 'danger');
         }
-      } else {
-        showError(response?.message);
+      } catch (e) {
+        logError(e);
+        showToast(e?.response?.data?.message || 'Something went wrong', 'danger');
+        dispatch(logoutUsers(e?.message));
+      } finally {
+        dispatch(setLoading(false));
       }
-    } catch (e) {
-      logError(e);
-      showError(e?.response?.data?.message || 'Something went wrong');
-      dispatch(logoutUsers(e?.message));
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
+    };
 
 export const updateProfile =
   (data: any, isNavigate = true, isAlert = true) =>
-  async (dispatch: AppDispatch) => {
-    try {
-      data['fcmToken'] = await AsyncStorage.getItem(FCM_TOKEN_KEY);
-      dispatch(setLoading(true));
-      const response = await appOperation.customer.update_profile(data);
+    async (dispatch: AppDispatch) => {
+      try {
+        data['fcmToken'] = await AsyncStorage.getItem(FCM_TOKEN_KEY);
+        dispatch(setLoading(true));
+        const response = await appOperation.customer.update_profile(data);
 
-      if (response?.success) {
-        isNavigate ? showError(response?.message) : null;
-        dispatch(getUserProfile(isNavigate));
-      } else {
-        isAlert ? showError(response?.message) : null;
+        if (response?.success) {
+          isNavigate ? showToast(response?.message, 'success') : null;
+          dispatch(getUserProfile(isNavigate));
+        } else {
+          isAlert ? showToast(response?.message, 'danger') : null;
+        }
+      } catch (e) {
+        logError(e);
+        showToast(e?.response?.data?.message || 'Something went wrong', 'danger');
+        dispatch(logoutUsers(e?.message));
+      } finally {
+        dispatch(setLoading(false));
       }
-    } catch (e) {
-      logError(e);
-      showError(e?.response?.data?.message || 'Something went wrong');
-      dispatch(logoutUsers(e?.message));
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
+    };
 
 export const uploadPdf =
   (data: FormData, setPdf: any) => async (dispatch: AppDispatch) => {
@@ -225,11 +225,11 @@ export const uploadPdf =
       if (response?.success) {
         setPdf(response?.data?.path);
       } else {
-        showError(response?.message);
+        showToast(response?.message, 'danger');
       }
     } catch (e) {
       logError(e);
-      showError(e?.response?.data?.message || 'Something went wrong');
+      showToast(e?.response?.data?.message || 'Something went wrong', 'danger');
       dispatch(logoutUsers(e?.message));
     } finally {
       dispatch(setLoading(false));
@@ -244,11 +244,11 @@ export const submitReport = (data: any) => async (dispatch: AppDispatch) => {
       NavigationService.navigate('Calendar');
       dispatch(getCalendarData('Completed'));
     } else {
-      showError(response?.message);
+      showToast(response?.message, 'danger');
     }
   } catch (e) {
     logError(e);
-    showError(e?.response?.data?.message || 'Something went wrong');
+    showToast(e?.response?.data?.message || 'Something went wrong', 'danger');
     dispatch(logoutUsers(e?.message));
   } finally {
     dispatch(setLoading(false));
