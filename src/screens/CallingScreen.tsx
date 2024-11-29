@@ -298,8 +298,8 @@ const styles = StyleSheet.create({
   head: {fontSize: 20},
   info: {backgroundColor: '#ffffe0', color: '#0000ff'},
   camera: {
-    height: 30,
-    width: 30,
+    height: 40,
+    width: 40,
     tintColor: colors.primary,
   },
 });
