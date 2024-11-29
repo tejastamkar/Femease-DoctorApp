@@ -19,7 +19,7 @@ export class AppOperation {
   customerToken;
   accountToken;
   constructor() {
-    this.base_url = 'https://703d-2409-40f2-200d-690e-c90c-1095-f5bd-847a.ngrok-free.app/api/v1/';
+    this.base_url = 'https://stgbackend.femease.in/api/v1/';
     this.root_path = ``;
     this.admin = admin(this);
     this.guest = guest(this);
