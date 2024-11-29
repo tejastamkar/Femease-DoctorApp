@@ -37,8 +37,10 @@ export const sendOtp =
       if (response?.success) {
         dispatch(setUserData(response.data));
         NavigationService.navigate(OTP_VERIFY_SCREEN);
+        showToast(response?.message, 'success');
+      } else {
+        showToast(response?.message, 'danger');
       }
-      showToast(response?.message, 'success');
     } catch (e) {
       showToast(e?.message || 'An unexpected error occurred', 'danger');
       dispatch(logoutUsers(e?.message));
