@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     height:
       Platform.OS === 'ios'
         ? dimensions.height / 2 - 60
-        : dimensions.height / 2 - 20,
+        : dimensions.height / 2 - 41,
   },
   videoView1: {
     width: '100%',
