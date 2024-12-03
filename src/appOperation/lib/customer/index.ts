@@ -27,6 +27,8 @@ export default (appOperation: AppOperation) => ({
     appOperation.post('users/pdf', data, CUSTOMER_TYPE),
   submit_report: (data: any) =>
     appOperation.patch('doctor/submit-report', data, CUSTOMER_TYPE),
+  updateReport:(data: any)=>
+    appOperation.patch('doctor/update-report', data, CUSTOMER_TYPE),
   calendar_data: (status: string) =>
     appOperation.get(
       `doctor/appointment-type?status=${status}`,

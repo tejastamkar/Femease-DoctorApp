@@ -257,6 +257,26 @@ export const submitReport = (data: any) => async (dispatch: AppDispatch) => {
   }
 };
 
+export const updateReportAction = (data: any) => async (dispatch: AppDispatch) => {
+  try {
+    dispatch(setLoading(true));
+    const response = await appOperation.customer.updateReport(data);
+
+    if (response?.success) {
+      NavigationService.navigate('Calendar');
+      dispatch(getCalendarData('Completed'));
+    } else {
+      showToast(response?.message, 'danger');
+    }
+  } catch (e) {
+    logError(e);
+    showToast(e?.response?.data?.message || 'Something went wrong', 'danger');
+    dispatch(logoutUsers(e?.message));
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
 export const getCalendarData =
   (status: string) => async (dispatch: AppDispatch) => {
     try {

@@ -21,7 +21,7 @@ import {profilePlaceholder, uploadIcon} from '../helper/ImageAssets';
 import {useAppDispatch, useAppSelector} from '../store/hooks';
 import {colors} from '../theme/colors';
 import {MediaUploadModal} from '../common/MediaUploadModal';
-import {submitReport, uploadImage, uploadPdf} from '../actions/authActions';
+import {submitReport, updateReportAction, uploadImage, uploadPdf} from '../actions/authActions';
 import {IMAGE_BASE_URL} from '../helper/Constants';
 import {getAge} from '../helper/utility';
 import {useRoute} from '@react-navigation/native';
@@ -82,7 +82,7 @@ const SubmitReport = ({navigation}) => {
       meetingReport: pdf,
     };
 
-    dispatch(submitReport(data));
+    updateReport ? dispatch(updateReportAction(data)) : dispatch(submitReport(data));
   };
 
   return (
@@ -147,7 +147,7 @@ const SubmitReport = ({navigation}) => {
             onSubmit();
           }}
           loading={isLoading}
-          children="Submit Report"
+          children={updateReport?'Update Report':"Submit Report"}
         />
       </KeyBoardAware>
       <MediaUploadModal
