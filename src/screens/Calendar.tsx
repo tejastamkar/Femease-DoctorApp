@@ -129,6 +129,11 @@ const CompletedContainer = ({item}) => {
     dispatch(getPatientDetails(_id));
     NavigationService.navigate(SUBMIT_REPORT_SCREEN, {isComplete: true});
   };
+
+  const updateReport = ()=>{
+    dispatch(getPatientDetails(_id))
+    NavigationService.navigate(SUBMIT_REPORT_SCREEN, {updateReport: true});
+  }
   return (
     <TouchableOpacityView
       style={[
@@ -177,13 +182,9 @@ const CompletedContainer = ({item}) => {
         </AppText>
       </View>
       <Button
-        onPress={() => onSubmit()}
-        disabled={reportSubmitted}
-        children="Submit Report"
-        containerStyle={[
-          styles.reportButton,
-          reportSubmitted && {backgroundColor: colors.disabled_button},
-        ]}
+        onPress={() => reportSubmitted? updateReport(): onSubmit()}
+        children={reportSubmitted?'Update report': 'Submit report'}
+        containerStyle={styles.reportButton}
       />
     </TouchableOpacityView>
   );

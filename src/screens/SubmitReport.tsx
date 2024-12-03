@@ -32,6 +32,7 @@ const SubmitReport = ({navigation}) => {
   const dispatch = useAppDispatch();
   const route = useRoute();
   const isComplete = route?.params?.isComplete ?? '';
+  const updateReport = route?.params?.updateReport ?? '';
   const duration = route?.params?.duration ?? '';
   const {patientDetails, isLoading} = useAppSelector(state => state.auth);
   const {name, avatar, _id, dob} = patientDetails ?? '';
@@ -44,7 +45,7 @@ const SubmitReport = ({navigation}) => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       () => {
-        isComplete
+        (isComplete || updateReport)
           ? NavigationService.goBack()
           : NavigationService.navigate('Home');
         return true;
