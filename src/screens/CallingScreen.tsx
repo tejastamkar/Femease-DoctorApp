@@ -1,6 +1,6 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {PermissionsAndroid, Platform} from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
 import {
   ClientRoleType,
   createAgoraRtcEngine,
@@ -16,9 +16,9 @@ import {
   SIXTEEN,
   WHITE,
 } from '../common';
-import {useAppDispatch, useAppSelector} from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import NavigationService from '../navigation/NavigationService';
-import {SUBMIT_REPORT_SCREEN} from '../navigation/routes';
+import { SUBMIT_REPORT_SCREEN } from '../navigation/routes';
 import {
   callEndIcon,
   muteIcon,
@@ -27,23 +27,24 @@ import {
   unmuteIcon,
   videoIcon,
 } from '../helper/ImageAssets';
-import {colors} from '../theme/colors';
-import {timeDifference} from '../helper/utility';
+import { colors } from '../theme/colors';
+import { timeDifference } from '../helper/utility';
 import FastImage from 'react-native-fast-image';
-import {setAgoraDetails} from '../slices/authSlice';
-import {updateCallStatus} from '../actions/authActions';
+import { setAgoraDetails } from '../slices/authSlice';
+import { updateCallStatus } from '../actions/authActions';
+import KeepAwake from '@sayem314/react-native-keep-awake';
 
 const dimensions = {
   width: Dimensions.get('window').width,
   height: Dimensions.get('window').height,
 };
-const CallingScreen = ({route}) => {
+const CallingScreen = ({ route }) => {
   const dispatch = useAppDispatch();
-  const {agoraDetails, patientDetails, homeData} = useAppSelector(state => {
+  const { agoraDetails, patientDetails, homeData } = useAppSelector(state => {
     return state.auth;
   });
-  const {data: _data} = homeData ?? '';
-  const {name} = _data ?? '';
+  const { data: _data } = homeData ?? '';
+  const { name } = _data ?? '';
 
   const appId = '963bbc15825c4ecf8d1a5d80a469b3b0';
   const channelName = agoraDetails?.channelName;
@@ -182,7 +183,7 @@ const CallingScreen = ({route}) => {
         <React.Fragment key={0}>
           {isJoined ? (
             <RtcSurfaceView
-              canvas={{uid: 0}}
+              canvas={{ uid: 0 }}
               style={remoteUid == 0 ? styles.videoView1 : styles.videoView}
             />
           ) : (
@@ -214,7 +215,7 @@ const CallingScreen = ({route}) => {
         isJoined && remoteUid !== 0 ? (
           <React.Fragment key={remoteUid}>
             <RtcSurfaceView
-              canvas={{uid: remoteUid}}
+              canvas={{ uid: remoteUid }}
               style={styles.videoView}
             />
           </React.Fragment>
@@ -265,6 +266,7 @@ const CallingScreen = ({route}) => {
           />
         </TouchableOpacity>
       </View>
+      <KeepAwake />
     </AppSafeAreaView>
   );
 };
@@ -275,8 +277,8 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     margin: 5,
   },
-  main: {flex: 1, alignItems: 'center', paddingTop: 40},
-  scroll: {flex: 1, backgroundColor: '#ddeeff', width: '100%'},
+  main: { flex: 1, alignItems: 'center', paddingTop: 40 },
+  scroll: { flex: 1, backgroundColor: '#ddeeff', width: '100%' },
   videoView: {
     width: '100%',
     height:
@@ -295,8 +297,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: Platform.OS === 'android' ? 0 : 20,
   },
-  head: {fontSize: 20},
-  info: {backgroundColor: '#ffffe0', color: '#0000ff'},
+  head: { fontSize: 20 },
+  info: { backgroundColor: '#ffffe0', color: '#0000ff' },
   camera: {
     height: 40,
     width: 40,
