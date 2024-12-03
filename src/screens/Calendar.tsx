@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppSafeAreaView,
   AppText,
@@ -18,7 +18,7 @@ import {
   TouchableOpacityView,
   YELLOW,
 } from '../common';
-import {Image, StyleSheet, View} from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import {
   NavigationState,
   SceneMap,
@@ -26,20 +26,20 @@ import {
   TabBar,
   TabView,
 } from 'react-native-tab-view';
-import {colors} from '../theme/colors';
-import {universalPaddingVertical} from '../theme/dimens';
-import {completeIcon, profilePlaceholder} from '../helper/ImageAssets';
+import { colors } from '../theme/colors';
+import { universalPaddingVertical } from '../theme/dimens';
+import { completeIcon, profilePlaceholder } from '../helper/ImageAssets';
 import NavigationService from '../navigation/NavigationService';
-import {SUBMIT_REPORT_SCREEN} from '../navigation/routes';
-import {useAppDispatch, useAppSelector} from '../store/hooks';
-import {getCalendarData, getPatientDetails} from '../actions/authActions';
-import {commonStyles} from '../theme/commonStyles';
-import {getAge} from '../helper/utility';
+import { SUBMIT_REPORT_SCREEN } from '../navigation/routes';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { getCalendarData, getPatientDetails } from '../actions/authActions';
+import { commonStyles } from '../theme/commonStyles';
+import { getAge } from '../helper/utility';
 import moment from 'moment';
-import {IMAGE_BASE_URL} from '../helper/Constants';
+import { IMAGE_BASE_URL } from '../helper/Constants';
 import FastImage from 'react-native-fast-image';
 
-export const ListEmptyComponent = ({title}: any) => {
+export const ListEmptyComponent = ({ title }: any) => {
   return (
     <View style={commonStyles.center}>
       <AppText>{title}</AppText>
@@ -47,14 +47,14 @@ export const ListEmptyComponent = ({title}: any) => {
   );
 };
 
-const UpcomingContainer = ({item}) => {
-  const {date, user, subscription, doctorFee, time} = item ?? '';
-  const {name, avatar, dob} = user ?? '';
+const UpcomingContainer = ({ item }) => {
+  const { date, user, subscription, doctorFee, time } = item ?? '';
+  const { name, avatar, dob } = user ?? '';
   return (
     <TouchableOpacityView style={[styles.scheduleContainerSecond]}>
       <View style={styles.scheduleContainer}>
         <FastImage
-          source={avatar ? {uri: IMAGE_BASE_URL + avatar} : profilePlaceholder}
+          source={avatar ? { uri: IMAGE_BASE_URL + avatar } : profilePlaceholder}
           resizeMode="cover"
           style={styles.scheduleIcon}
         />
@@ -82,9 +82,9 @@ const UpcomingContainer = ({item}) => {
     </TouchableOpacityView>
   );
 };
-const OngoingContainer = ({item}) => {
-  const {user, doctorFee, subscription} = item ?? '';
-  const {name, dob, avatar} = user ?? '';
+const OngoingContainer = ({ item }) => {
+  const { user, doctorFee, subscription } = item ?? '';
+  const { name, dob, avatar } = user ?? '';
   return (
     <TouchableOpacityView style={[styles.scheduleContainerSecond]}>
       <AppText color={ORANGE} weight={SEMI_BOLD} type={FOURTEEN}>
@@ -92,7 +92,7 @@ const OngoingContainer = ({item}) => {
       </AppText>
       <View style={[styles.scheduleContainer, styles.scheduleContainerOngoing]}>
         <FastImage
-          source={avatar ? {uri: IMAGE_BASE_URL + avatar} : profilePlaceholder}
+          source={avatar ? { uri: IMAGE_BASE_URL + avatar } : profilePlaceholder}
           resizeMode="cover"
           style={styles.scheduleIcon}
         />
@@ -119,20 +119,20 @@ const OngoingContainer = ({item}) => {
   );
 };
 
-const CompletedContainer = ({item}) => {
+const CompletedContainer = ({ item }) => {
   const dispatch = useAppDispatch();
-  const {date, reportSubmitted, subscription, doctorFee, user, _id} =
+  const { date, reportSubmitted, subscription, doctorFee, user, _id } =
     item ?? '';
-  const {name, dob, avatar} = user ?? '';
+  const { name, dob, avatar } = user ?? '';
 
   const onSubmit = () => {
     dispatch(getPatientDetails(_id));
-    NavigationService.navigate(SUBMIT_REPORT_SCREEN, {isComplete: true});
+    NavigationService.navigate(SUBMIT_REPORT_SCREEN, { isComplete: true });
   };
 
-  const updateReport = ()=>{
+  const updateReport = () => {
     dispatch(getPatientDetails(_id))
-    NavigationService.navigate(SUBMIT_REPORT_SCREEN, {updateReport: true});
+    NavigationService.navigate(SUBMIT_REPORT_SCREEN, { updateReport: true });
   }
   return (
     <TouchableOpacityView
@@ -158,7 +158,7 @@ const CompletedContainer = ({item}) => {
 
       <View style={[styles.scheduleContainer, styles.scheduleContainerOngoing]}>
         <FastImage
-          source={avatar ? {uri: IMAGE_BASE_URL + avatar} : profilePlaceholder}
+          source={avatar ? { uri: IMAGE_BASE_URL + avatar } : profilePlaceholder}
           resizeMode="cover"
           style={styles.scheduleIcon}
         />
@@ -182,16 +182,16 @@ const CompletedContainer = ({item}) => {
         </AppText>
       </View>
       <Button
-        onPress={() => reportSubmitted? updateReport(): onSubmit()}
-        children={reportSubmitted?'Update report': 'Submit report'}
+        onPress={() => reportSubmitted ? updateReport() : onSubmit()}
+        children={reportSubmitted ? 'Update report' : 'Submit report'}
         containerStyle={styles.reportButton}
       />
     </TouchableOpacityView>
   );
 };
 
-const TabContainer = ({index}: any) => {
-  const {calendarData, isLoading} = useAppSelector(state => state.auth);
+const TabContainer = ({ index }: any) => {
+  const { calendarData, isLoading } = useAppSelector(state => state.auth);
   return (
     <KeyBoardAware>
       {isLoading ? (
@@ -214,7 +214,7 @@ const TabContainer = ({index}: any) => {
           {calendarData?.length === 0 && (
             <ListEmptyComponent title="Nothing to show" />
           )}
-          <View style={{height: 50}} />
+          <View style={{ height: 50 }} />
         </>
       )}
     </KeyBoardAware>
@@ -222,12 +222,12 @@ const TabContainer = ({index}: any) => {
 };
 
 export const RenderTabBar = (
-  props: SceneRendererProps & {navigationState: NavigationState<any>},
+  props: SceneRendererProps & { navigationState: NavigationState<any> },
 ) => {
   return (
     <TabBar
       {...props}
-      renderLabel={({route, focused}) => (
+      renderLabel={({ route, focused }) => (
         <View
           style={[
             {},
@@ -245,7 +245,7 @@ export const RenderTabBar = (
           </AppText>
         </View>
       )}
-      indicatorStyle={{backgroundColor: colors.transparent}}
+      indicatorStyle={{ backgroundColor: colors.transparent }}
       pressColor={colors.transparent}
       style={[styles.tabbar]}
     />
@@ -256,9 +256,9 @@ const Calendar = () => {
   const dispatch = useAppDispatch();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'upcoming', title: 'Upcoming'},
-    {key: 'ongoing', title: 'Ongoing'},
-    {key: 'completed', title: 'Completed'},
+    { key: 'upcoming', title: 'Upcoming' },
+    { key: 'ongoing', title: 'Ongoing' },
+    { key: 'completed', title: 'Completed' },
   ]);
 
   useEffect(() => {
@@ -277,7 +277,7 @@ const Calendar = () => {
   return (
     <AppSafeAreaView>
       <TabView
-        navigationState={{index, routes}}
+        navigationState={{ index, routes }}
         renderScene={renderScene}
         renderTabBar={props => <RenderTabBar {...props} />}
         onIndexChange={setIndex}
