@@ -49,7 +49,7 @@ const TabBarIcon = ({source, focused}: TabBarIconProps) => {
       source={source}
       resizeMode="contain"
       style={commonStyles.tabIcon}
-      tintColor={focused ? colors.primary : colors.black}
+      tintColor={focused ? colors.primary : colors.tabIconColor}
     />
   );
 };
