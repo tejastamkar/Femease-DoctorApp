@@ -18,3 +18,6 @@ export const EXPERTS_SCREEN = 'EXPERTS_SCREEN';
 export const REMARKS_SCREEN = 'REMARKS_SCREEN';
 export const CALLING_SCREEN = 'CALLING_SCREEN';
 export const SUBMIT_REPORT_SCREEN = 'SUBMIT_REPORT_SCREEN';
+export const FORUM = 'FORUM';
+export const FORUM_LIST = 'FORUM_LIST';
+export const SAVED_POSTS = 'SAVED_POSTS';

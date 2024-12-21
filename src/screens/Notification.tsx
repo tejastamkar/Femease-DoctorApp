@@ -8,6 +8,7 @@ import {useAppDispatch, useAppSelector} from '../store/hooks';
 import {getNotificationList} from '../actions/authActions';
 import {noNotification} from '../helper/ImageAssets';
 import AnimatedLottieView from 'lottie-react-native';
+import { Header } from './forum/components';
 
 const ListEmptyComponent = () => {
   return (
@@ -39,6 +40,7 @@ const Notification = () => {
 
   return (
     <AppSafeAreaView>
+      <Header title="" />
       <View style={commonStyles.whiteBackgroundWithPadding}>
         <SectionList
           sections={notificationList}

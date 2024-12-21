@@ -13,8 +13,13 @@ export const rightArrowIcon = require('../../assets/img/right_arrow.png');
 export const dotIcon = require('../../assets/img/dot.png');
 export const calendarIcon = require('../../assets/img/calendar_icon.png');
 export const clockIcon = require('../../assets/img/clock_icon.png');
+export const shareIcon = require("../../assets/img/share.png");
 export const editIcon = require('../../assets/img/pencil.png');
 export const cameraIcon = require('../../assets/img/cameraIcon.png');
+export const femeaseTab = require("../../assets/img/femeaseTab.png");
+export const confetti = require("../../assets/animation/confetti.json")
+export const fam = require("../../assets/img/fam.png");
+
 export const galleryIcon = require('../../assets/img/galleryIcon.png');
 export const rightSecond = require('../../assets/img/right_second.png');
 export const starIcon = require('../../assets/img/star.png');

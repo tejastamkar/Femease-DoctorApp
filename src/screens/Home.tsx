@@ -15,6 +15,8 @@ import {
   TWENTY,
   TouchableOpacityView,
 } from '../common';
+import * as routes from '../navigation/routes';
+
 import {
   PermissionsAndroid,
   Platform,
@@ -26,6 +28,7 @@ import {
   dotIcon,
   profilePlaceholder,
   rightArrowIcon,
+  tabNotification,
 } from '../helper/ImageAssets';
 import LinearGradient from 'react-native-linear-gradient';
 import {colors} from '../theme/colors';
@@ -48,6 +51,7 @@ import {
 } from '../actions/authActions';
 import {ListEmptyComponent} from './Calendar';
 import FastImage from 'react-native-fast-image';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -113,13 +117,32 @@ const Home = () => {
                 Hello!{'\n'}
                 {name},
               </AppText>
-              <FastImage
-                source={
-                  avatar ? {uri: IMAGE_BASE_URL + avatar} : profilePlaceholder
-                }
-                style={styles.profileIcon}
-                resizeMode="cover"
-              />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  display: 'flex',
+                  gap: 20,
+                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    NavigationService.navigate(routes.NOTIFICATION_SCREEN);
+                  }}>
+                  <FastImage
+                    source={tabNotification}
+                    resizeMode="contain"
+                    style={{width: 25, height: 25}}
+                    tintColor={colors.black}
+                  />
+                </TouchableOpacity>
+                <FastImage
+                  source={
+                    avatar ? {uri: IMAGE_BASE_URL + avatar} : profilePlaceholder
+                  }
+                  style={styles.profileIcon}
+                  resizeMode="cover"
+                />
+              </View>
             </View>
             <View style={styles.headerSecond}>
               {data.map(e => {
@@ -300,9 +323,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   profileIcon: {
-    height: 60,
-    width: 60,
-    borderRadius: 30,
+    height: 40,
+    width: 40,
+    borderRadius: 20,
   },
   headerSecond: {
     flexDirection: 'row',

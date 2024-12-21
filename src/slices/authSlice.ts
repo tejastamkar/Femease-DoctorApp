@@ -8,6 +8,7 @@ export const initialState = {
   completedAppointment: [],
   patientDetails: undefined,
   agoraDetails: undefined,
+  isLoginModal: false,
   calendarData: [],
   notificationList: [],
 };
@@ -36,7 +37,9 @@ export const authSlice = createSlice({
     setNotificationList: (state, {payload}) => {
       state.notificationList = payload;
     },
-
+    setIsLoginModal: (state, {payload}) => {
+      state.isLoginModal = payload;
+    },
     resetAuth: state => {
       state = undefined;
     },
@@ -49,6 +52,7 @@ export const {
   resetAuth,
   setHomeData,
   setPatientDetails,
+  setIsLoginModal,
   setAgoraDetails,
   setCalendarData,
   setNotificationList,

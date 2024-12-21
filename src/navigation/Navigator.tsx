@@ -14,6 +14,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {fontFamily} from '../theme/typography';
 import Home from '../screens/Home';
 import {
+  fam,
   tabCalendar,
   tabHome,
   tabNotification,
@@ -31,6 +32,9 @@ import SubmitReport from '../screens/SubmitReport';
 import FastImage from 'react-native-fast-image';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import AuthLoading from '../screens/AuthLoading';
+import ForumList from '../screens/forum/ForumList';
+import SavedPosts from '../screens/forum/SavedPosts';
+import {ForumMain} from '../screens/forum';
 
 interface TabBarIconProps {
   source: number | undefined;
@@ -45,7 +49,7 @@ const TabBarIcon = ({source, focused}: TabBarIconProps) => {
       source={source}
       resizeMode="contain"
       style={commonStyles.tabIcon}
-      tintColor={focused && colors.primary}
+      tintColor={focused ? colors.primary : colors.black}
     />
   );
 };
@@ -65,8 +69,24 @@ const MyAuthLoadingStack = () => (
       component={BottomTab}
     />
     <Stack.Screen name={routes.PATIENT_SCREEN} component={PatientDetails} />
+    <Stack.Screen
+      name={routes.FORUM}
+      options={{headerShown: false}}
+      component={ForumMain}
+    />
+    <Stack.Screen
+      name={routes.FORUM_LIST}
+      options={{headerShown: false}}
+      component={ForumList}
+    />
 
+    <Stack.Screen
+      name={routes.SAVED_POSTS}
+      options={{headerShown: false}}
+      component={SavedPosts}
+    />
     <Stack.Screen name={routes.EDIT_PROFILE_SCREEN} component={EditProfile} />
+    <Stack.Screen name={routes.NOTIFICATION_SCREEN} component={Notification} />
     <Stack.Screen name={routes.CALLING_SCREEN} component={CallingScreen} />
     <Stack.Screen name={routes.SUBMIT_REPORT_SCREEN} component={SubmitReport} />
   </Stack.Navigator>
@@ -131,12 +151,23 @@ const BottomTab = () => (
         ),
       }}
     />
-    <Tab.Screen
+    {/* <Tab.Screen
       name={'Notification'}
       component={Notification}
       options={{
         tabBarIcon: ({focused}) => (
           <TabBarIcon source={tabNotification} focused={focused} />
+        ),
+      }}
+    /> */}
+    <Tab.Screen
+      name="ForumList"
+      component={ForumList}
+      options={{
+        title: 'Forum',
+        headerShown: false,
+        tabBarIcon: ({focused}) => (
+          <TabBarIcon source={fam} focused={focused} />
         ),
       }}
     />
