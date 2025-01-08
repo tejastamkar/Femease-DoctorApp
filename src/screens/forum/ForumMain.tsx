@@ -692,8 +692,8 @@ const ForumMain = ({route}: {route: any}) => {
                 }>
                 <IconMC
                   name={isCommentLiked ? 'heart' : 'heart-outline'}
-                  size={24}
-                  color={isCommentLiked ? colors.primary : colors.black}
+                  size={18}
+                  color={isCommentLiked ? colors.primary : colors.gray}
                 />
                 <AppText>{likes?.length}</AppText>
               </TouchableOpacity>

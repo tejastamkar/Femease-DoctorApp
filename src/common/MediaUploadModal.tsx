@@ -70,9 +70,12 @@ const MediaUploadModal = ({
 }: MediaUploadModalProps) => {
   const openGallery = () => {
     ImageCropPicker.openPicker({
-      width: 300,
-      height: 400,
       cropping: true,
+      cropperChooseText: "Crop",
+      cropperCancelText: "Cancel",
+      includeBase64: false,
+      compressImageQuality: 1,
+      freeStyleCropEnabled: true,
     })
       .then(image => {
         image['mediaType'] = 'image';
@@ -95,9 +98,12 @@ const MediaUploadModal = ({
 
   const openCamera = () => {
     ImageCropPicker.openCamera({
-      width: 300,
-      height: 400,
       cropping: true,
+      cropperChooseText: "Crop",
+      cropperCancelText: "Cancel",
+      includeBase64: false,
+      compressImageQuality: 1,
+      freeStyleCropEnabled: true, 
     })
       .then(image => {
         image['mediaType'] = 'image';

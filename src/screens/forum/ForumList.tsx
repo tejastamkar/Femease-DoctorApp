@@ -1410,6 +1410,7 @@ const ForumList = () => {
                     dataSet={searchSuggetions}
                     inputContainerStyle={{
                       backgroundColor: colors.gray_bg,
+
                     }}
                     containerStyle={styles.searchInputText}
                     textInputProps={{
@@ -1418,9 +1419,26 @@ const ForumList = () => {
                       style: {
                         backgroundColor: colors.gray_bg,
                         ...styles.searchInputText,
+
+
                       },
                       // value: searchQuery
+
                     }}
+                    suggestionsListContainerStyle={{
+                      backgroundColor: "white",
+                    }}
+                    renderItem={(item, text) => (
+                      <Text
+                        style={{
+                          color: "black",
+                          padding: 15,
+                          borderBottomColor: Theme.COLORS.gray_bg,
+                        }}
+                      >
+                        {item.title}
+                      </Text>
+                    )}
                   />
                   <IconMC name="magnify" size={24} color={colors.black} />
                 </View>

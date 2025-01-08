@@ -36,6 +36,8 @@ export const useStyle = () => {
       flex: 1,
       color: colors.black,
       fontFamily: FONTS.Regular,
+      fontSize: 13,
+     // backgroundColor: colors.white,
     },
     icon: {
       padding: 5, // Optional: Adjust padding to position the icon as desired
@@ -245,8 +247,9 @@ export const useStyle = () => {
       borderRadius: 4,
     },
     commentSwipeContainer: {
-      backgroundColor: colors.primary,
+//      backgroundColor: colors.primary,
       flex: 1,
+      backgroundColor: '#ff3f32',
       justifyContent: 'center',
       alignItems: 'flex-end',
     },
