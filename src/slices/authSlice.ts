@@ -11,6 +11,7 @@ export const initialState = {
   isLoginModal: false,
   calendarData: [],
   notificationList: [],
+  isConfettiVisibleState: false,
 };
 export const authSlice = createSlice({
   name: 'auth',
@@ -43,6 +44,9 @@ export const authSlice = createSlice({
     resetAuth: state => {
       state = undefined;
     },
+    setIsConfettiVisibleState: (state, {payload}) => {
+      state.isConfettiVisibleState = payload;
+    },
   },
 });
 
@@ -56,6 +60,7 @@ export const {
   setAgoraDetails,
   setCalendarData,
   setNotificationList,
+  setIsConfettiVisibleState,
 } = authSlice.actions;
 
 export default authSlice.reducer;

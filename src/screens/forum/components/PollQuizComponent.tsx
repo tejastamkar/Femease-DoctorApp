@@ -12,8 +12,8 @@ import {colors, FONTS} from '../../../theme/colors';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
 import Swiper from 'react-native-swiper';
-import AnimatedLottieView from 'lottie-react-native';
-import {confetti} from '../../../helper/ImageAssets';
+import {useAppDispatch} from '../../../store/hooks';
+import {setIsConfettiVisibleState} from '../../../slices/authSlice';
 
 const dimensions = {
   width: Dimensions.get('window').width,
@@ -34,6 +34,7 @@ const PollQuizComponent = ({
   const BasicDetails = userData;
   const [height, setHeight] = useState(200);
   const [isConfettiVisible, setIsConfettiVisible] = useState<any>(false);
+  const dispatch = useAppDispatch();
 
   // Helper functions
   const totalVotes = pollData?.reduce(
@@ -56,8 +57,14 @@ const PollQuizComponent = ({
     answer: string,
     correctAnswer: string,
   ) => {
-    if (answer == correctAnswer) setIsConfettiVisible(questionId);
-    setTimeout(() => setIsConfettiVisible(false), 10000);
+    if (answer == correctAnswer) {
+      setIsConfettiVisible(questionId);
+      dispatch(setIsConfettiVisibleState(true));
+    }
+    setTimeout(() => {
+      setIsConfettiVisible(false);
+      dispatch(setIsConfettiVisibleState(false));
+    }, 10000);
   };
 
   // Render functions
@@ -171,14 +178,7 @@ const PollQuizComponent = ({
             );
           })}
         </View>
-        {isConfettiVisible === questionId && (
-          <AnimatedLottieView
-            style={{height: height, width: 280, position: 'absolute', left: 65}}
-            source={confetti}
-            autoPlay
-            loop={false}
-          />
-        )}
+        
       </View>
     );
   };

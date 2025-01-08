@@ -68,6 +68,8 @@ import {Path, Svg} from 'react-native-svg';
 import ImageViewerFooter from './components/ImageViewerFooter';
 import Swiper from 'react-native-swiper';
 import {SwipeRow} from 'react-native-swipe-list-view';
+import {confetti} from '../../helper/ImageAssets';
+import AnimatedLottieView from 'lottie-react-native';
 const ForumList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {styles} = useStyle();
@@ -76,6 +78,9 @@ const ForumList = () => {
     state => state.post,
   );
   const {userData} = useSelector((state: RootState) => state.auth);
+  const {isConfettiVisibleState} = useSelector(
+    (state: RootState) => state.auth,
+  );
   const BasicDetails = userData;
   console.log(BasicDetails);
 
@@ -1072,7 +1077,7 @@ const ForumList = () => {
                   <Feather
                     name="edit"
                     style={styles.writeText}
-                    color={"#000"}
+                    color={'#000'}
                     size={24}
                   />
                   {/* <AppText style={styles.writeText}>Write</AppText> */}
@@ -1166,7 +1171,9 @@ const ForumList = () => {
               {comments.length > 0 && (
                 <FlatList2
                   data={comments.slice(0, 2)}
-                  renderItem={comment => renderComments(comment, true)}
+                  renderItem={comment =>
+                    renderComments(comment, true, undefined, item)
+                  }
                   keyExtractor={(_, index) => index.toString()}
                   contentContainerStyle={{paddingBottom: 10}}
                 />
@@ -1398,9 +1405,18 @@ const ForumList = () => {
                     closeOnBlur={true}
                     closeOnSubmit={true}
                     showChevron={false}
-                    onChangeText={text =>
-                      text.length >= 3 ? getSearchSuggetions(text) : text
-                    }
+                    onChangeText={text => {
+                      if (text.length == 0) {
+                        setSearchQuery(null);
+                        setSearchSuggetions([]);
+                        return;
+                      }
+                      if (text.length >= 3) {
+                        getSearchSuggetions(text);
+                      } else {
+                        text;
+                      }
+                    }}
                     direction={Platform.select({ios: 'down'})}
                     onSelectItem={(e: any) => e && setSearchQuery(e?.title)}
                     onClear={() => {
@@ -1410,7 +1426,6 @@ const ForumList = () => {
                     dataSet={searchSuggetions}
                     inputContainerStyle={{
                       backgroundColor: colors.gray_bg,
-
                     }}
                     containerStyle={styles.searchInputText}
                     textInputProps={{
@@ -1419,23 +1434,19 @@ const ForumList = () => {
                       style: {
                         backgroundColor: colors.gray_bg,
                         ...styles.searchInputText,
-
-
                       },
                       // value: searchQuery
-
                     }}
                     suggestionsListContainerStyle={{
-                      backgroundColor: "white",
+                      backgroundColor: 'white',
                     }}
                     renderItem={(item, text) => (
                       <Text
                         style={{
-                          color: "black",
+                          color: 'black',
                           padding: 15,
                           borderBottomColor: Theme.COLORS.gray_bg,
-                        }}
-                      >
+                        }}>
                         {item.title}
                       </Text>
                     )}
@@ -1482,6 +1493,23 @@ const ForumList = () => {
           contentContainerStyle={{paddingBottom: 60}}
           ItemSeparatorComponent={() => <Divider />}
         />
+        {isConfettiVisibleState && (
+          <AnimatedLottieView
+            style={{
+              height: '100%',
+              width: '100%',
+              position: 'absolute',
+              bottom: 0,
+              right: 'auto',
+              left: 'auto',
+              top: 'auto',
+              zIndex: 1,
+            }}
+            source={confetti}
+            autoPlay
+            loop={false}
+          />
+        )}
       </View>
     </AppSafeAreaView>
   );
