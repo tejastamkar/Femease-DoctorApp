@@ -893,7 +893,7 @@ const ForumList = () => {
                       )}
                     </View>
                   </View>
-                  {!isFromPostsList && !deleted && (
+                  {isFromPostsList && !deleted && (
                     <TouchableOpacity
                       style={{alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
