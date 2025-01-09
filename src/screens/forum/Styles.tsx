@@ -1,5 +1,5 @@
 import {StyleSheet, useWindowDimensions} from 'react-native';
-import {colors , FONTS} from '../../theme/colors';
+import {colors, FONTS} from '../../theme/colors';
 
 export const useStyle = () => {
   const {width, height} = useWindowDimensions();
@@ -37,7 +37,7 @@ export const useStyle = () => {
       color: colors.black,
       fontFamily: FONTS.Regular,
       fontSize: 13,
-     // backgroundColor: colors.white,
+      // backgroundColor: colors.white,
     },
     icon: {
       padding: 5, // Optional: Adjust padding to position the icon as desired
@@ -247,7 +247,7 @@ export const useStyle = () => {
       borderRadius: 4,
     },
     commentSwipeContainer: {
-//      backgroundColor: colors.primary,
+      //      backgroundColor: colors.primary,
       flex: 1,
       backgroundColor: '#ff3f32',
       justifyContent: 'center',

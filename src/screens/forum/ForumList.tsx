@@ -81,8 +81,7 @@ const ForumList = () => {
   const {isConfettiVisibleState} = useSelector(
     (state: RootState) => state.auth,
   );
-  const BasicDetails = userData;
-  console.log(BasicDetails);
+  const BasicDetails: any = userData;
 
   const isLogin = true;
 
@@ -106,7 +105,6 @@ const ForumList = () => {
     try {
       dispatch(setIsLoading(true));
       const response = await appOperation.customer.get_forum_post(page);
-      // console.log("get post response", response.posts[0]);
       dispatch(
         setPostRes({
           posts: response.posts,
@@ -129,7 +127,6 @@ const ForumList = () => {
         query,
         category,
       );
-      // console.log("get post response", response.posts[0].author);
       dispatch(
         setPostRes({
           posts: response.posts,
@@ -848,7 +845,7 @@ const ForumList = () => {
                   <Feather
                     name="trash"
                     style={{padding: 20}}
-                    color={colors.black}
+                    color={colors.white}
                     size={24}
                     onPress={() => {
                       commentSwipeRowRef?.current?.closeRow();
@@ -913,7 +910,7 @@ const ForumList = () => {
                       }>
                       <IconMC
                         name={isCommentLiked ? 'heart' : 'heart-outline'}
-                        size={24}
+                        size={18}
                         color={isCommentLiked ? colors.primary : colors.black}
                       />
                       <AppText>{likes?.length}</AppText>
@@ -1417,7 +1414,7 @@ const ForumList = () => {
                         text;
                       }
                     }}
-                    direction={Platform.select({ios: 'down'})}
+                    direction={Platform.select({ios: 'down', android: 'down'})}
                     onSelectItem={(e: any) => e && setSearchQuery(e?.title)}
                     onClear={() => {
                       setSearchQuery(null);
@@ -1438,18 +1435,21 @@ const ForumList = () => {
                       // value: searchQuery
                     }}
                     suggestionsListContainerStyle={{
-                      backgroundColor: 'white',
+                      backgroundColor: colors.white,
                     }}
-                    renderItem={(item, text) => (
-                      <Text
-                        style={{
-                          color: 'black',
-                          padding: 15,
-                          borderBottomColor: Theme.COLORS.gray_bg,
-                        }}>
-                        {item.title}
-                      </Text>
-                    )}
+                    renderItem={(item, index) => {
+                      return (
+                        <Text
+                          key={index}
+                          style={{
+                            color: 'black',
+                            padding: 10,
+                            borderBottomColor: colors.gray_bg,
+                          }}>
+                          {item.title}
+                        </Text>
+                      );
+                    }}
                   />
                   <IconMC name="magnify" size={24} color={colors.black} />
                 </View>

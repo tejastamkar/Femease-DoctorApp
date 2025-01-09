@@ -42,7 +42,7 @@ export const authSlice = createSlice({
       state.isLoginModal = payload;
     },
     resetAuth: state => {
-      state = undefined;
+      state = initialState;
     },
     setIsConfettiVisibleState: (state, {payload}) => {
       state.isConfettiVisibleState = payload;
