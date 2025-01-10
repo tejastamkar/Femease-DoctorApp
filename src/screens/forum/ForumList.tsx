@@ -877,7 +877,9 @@ const ForumList = () => {
                           {deleted ? '[Deleted]' : author?.name}
                         </AppText>
                         {isExpert && (
-                          <AppText style={styles.expertTag}>Expert</AppText>
+                          <View style={styles.expertTag}>
+                            <AppText style={styles.expertText}>Expert</AppText>
+                          </View>
                         )}
                         {!deleted && (
                           <AppText style={styles.commentTime}>
@@ -1141,7 +1143,7 @@ const ForumList = () => {
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => handleShare(_id)}>
-                  <Feather name="share" size={24} />
+                  <Feather name="share" size={24} color={colors.black} />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}

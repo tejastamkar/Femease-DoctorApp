@@ -680,7 +680,9 @@ function SavedPosts() {
                           {deleted ? '[Deleted]' : author?.name}
                         </AppText>
                         {isExpert && (
-                          <AppText style={styles.expertTag}>Expert</AppText>
+                          <View style={styles.expertTag}>
+                            <AppText style={styles.expertText}>Expert</AppText>
+                          </View>
                         )}
                         {!deleted && (
                           <AppText style={styles.commentTime}>

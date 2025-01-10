@@ -2,7 +2,7 @@ export const colors = {
   transparent: 'transparent',
   primary: '#E392A1',
   buttonBgDisabled: '#E392A180',
-  black: '#000000',
+  black: '#3A3A3A',
   gray: '#CECECE',
   dark_gray: '#8D8D8D',
   lightest_gray: '#F3F3F3',

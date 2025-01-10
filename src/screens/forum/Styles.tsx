@@ -108,6 +108,7 @@ export const useStyle = () => {
       backgroundColor: '#fff',
       marginHorizontal: 20,
     },
+
     button: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -174,6 +175,9 @@ export const useStyle = () => {
       borderRadius: 35,
       paddingHorizontal: 6,
       paddingVertical: 4,
+      overflow: 'hidden', // Important for iOS to respect borderRadius
+    },
+    expertText: {
       color: colors.white,
       fontFamily: FONTS.SemiBold,
     },
