@@ -332,7 +332,7 @@ const ForumList = () => {
         }
         if (replyPlaceHolder) {
           try {
-            const reply = {
+            const reply: any = {
               author: {
                 _id: BasicDetails?._id,
                 name: BasicDetails?.name,
@@ -348,13 +348,15 @@ const ForumList = () => {
             };
             setCommentText('');
             setReplyPlaceholder(false);
-            dispatch(setCommentReplyPost(reply));
 
             const response =
               await appOperation.customer.post_comment_reply_post(
                 replyPlaceHolder?.parentCommentId,
-                {replyText: reply.content},
+                {replyText: data?.content?.trim()},
               );
+            reply['_id'] = response.data.reply._id;
+
+            dispatch(setCommentReplyPost(reply));
             // console.log("commentReplyPost response", response);
           } catch (e) {
             showToast('Network error, Try again later', 'danger');
@@ -362,27 +364,27 @@ const ForumList = () => {
           }
         } else {
           try {
-            const theComment = {
-              author: {
-                _id: BasicDetails?._id,
-                name: BasicDetails?.name,
-                role_id: BasicDetails?.role_id,
-                avatar: BasicDetails?.avatar,
-              },
-              post: data?._id,
-              content: data?.content?.trim(),
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-              replies: [],
-              likes: [],
-            };
+            // const theComment = {
+            //   author: {
+            //     _id: BasicDetails?._id,
+            //     name: BasicDetails?.name,
+            //     role_id: BasicDetails?.role_id,
+            //     avatar: BasicDetails?.avatar,
+            //   },
+            //   post: data?._id,
+            //   content: data?.content?.trim(),
+            //   createdAt: new Date().toISOString(),
+            //   updatedAt: new Date().toISOString(),
+            //   replies: [],
+            //   likes: [],
+            // };
             setCommentText('');
             setReplyPlaceholder(false);
-            dispatch(setCommentPost(theComment));
 
             const response = await appOperation.customer.post_comment_post(
               data,
             );
+            dispatch(setCommentPost(response.savedComment));
             // console.log("commentPost response", response);
           } catch (e) {
             showToast('Network error, Try again later', 'danger');
@@ -955,7 +957,7 @@ const ForumList = () => {
           <FlatList2
             data={comments}
             renderItem={comment =>
-              renderComments(comment, undefined, undefined, item)
+              renderComments(comment, true, undefined, item)
             }
             keyExtractor={(_, index) => index.toString()}
             contentContainerStyle={{paddingBottom: 10}}

@@ -192,11 +192,10 @@ const ForumMain = ({route}: {route: any}) => {
     },
     [dispatch],
   );
-
   const handleComment = async (data: any, replyPlaceHolder: any) => {
     if (replyPlaceHolder) {
       try {
-        const reply = {
+        const reply: any = {
           author: {
             _id: BasicDetails?._id,
             name: BasicDetails?.name,
@@ -210,43 +209,49 @@ const ForumMain = ({route}: {route: any}) => {
           updatedAt: new Date().toISOString(),
           likes: [],
         };
-        setCommentText('');
-        setReplyPlaceholder(false);
-        dispatch(setSavedCommentReplyPost(reply));
-        dispatch(setCommentReplyPost(reply));
+        // dispatch(setSavedCommentReplyPost(reply));
+        // dispatch(setCommentReplyPost(reply));
 
         const response = await appOperation.customer.post_comment_reply_post(
           replyPlaceHolder?.parentCommentId,
-          {replyText: reply.content},
+          {replyText: data?.content?.trim()},
         );
-        // console.log("commentReplyPost response", response);
+
+        setCommentText('');
+        setReplyPlaceholder(false);
+        console.log('commentReplyPost response', response);
+        console.log('commentReplyPost response', response.data.reply);
+        reply['_id'] = response.data.reply._id;
+        dispatch(setSavedCommentReplyPost(reply));
+        dispatch(setCommentReplyPost(reply));
       } catch (e) {
         showToast('Network error, Try again later', 'danger');
         logError(e);
       }
     } else {
       try {
-        const theComment = {
-          author: {
-            _id: BasicDetails?._id,
-            name: BasicDetails?.name,
-            role_id: BasicDetails?.role_id,
-            avatar: BasicDetails?.avatar,
-          },
-          post: data?._id,
-          content: data?.content?.trim(),
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          replies: [],
-          likes: [],
-        };
+        // const theComment = {
+        //   author: {
+        //     _id: BasicDetails?._id,
+        //     name: BasicDetails?.name,
+        //     role_id: BasicDetails?.role_id,
+        //     avatar: BasicDetails?.avatar,
+        //   },
+        //   post: data?._id,
+        //   content: data?.content?.trim(),
+        //   createdAt: new Date().toISOString(),
+        //   updatedAt: new Date().toISOString(),
+        //   replies: [],
+        //   likes: [],
+        // };
         setCommentText('');
-        dispatch(setCommentPost(theComment));
-        dispatch(setSavedCommentPost(theComment));
+
         setReplyPlaceholder(false);
 
         const response = await appOperation.customer.post_comment_post(data);
         // console.log("commentPost response", response);
+        dispatch(setCommentPost(response.savedComment));
+        dispatch(setSavedCommentPost(response.savedComment));
       } catch (e) {
         showToast('Network error, Try again later', 'danger');
         logError(e);
