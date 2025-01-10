@@ -3,6 +3,7 @@ import admin from './lib/admin';
 import guest from './lib/guest';
 import customer from './lib/customer';
 import {ADMIN_TYPE, CUSTOMER_TYPE} from './types';
+import { BASE_URL } from '../helper/Constants';
 
 class ApiError extends Error {
   constructor(m) {
@@ -19,7 +20,7 @@ export class AppOperation {
   customerToken;
   accountToken;
   constructor() {
-    this.base_url = 'https://stgbackend.femease.in/api/v1/';
+    this.base_url = BASE_URL;
     this.root_path = ``;
     this.admin = admin(this);
     this.guest = guest(this);
